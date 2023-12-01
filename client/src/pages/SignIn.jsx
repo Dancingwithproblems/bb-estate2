@@ -1,13 +1,15 @@
 import { Link, useNavigate } from 'react-router-dom'; 
         import { useState } from 'react';
-        
+        import { useDispatch, useSelector } from 'react-redux';
+        import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice';
+    import OAuth from '../components/OAuth';
         
         export default function SignIn() {
         
             const [formData, setFormData] = useState({});
-            const [error, setError] = useState(null);
-            const [loading, setLoading] = useState(false);
+            const{ loading, error } = useSelector((state) => state.user);
             const navigate = useNavigate();
+            const dispatch = useDispatch();
         const handleChange = (e) => {
             setFormData(
                 {
@@ -22,7 +24,7 @@ import { Link, useNavigate } from 'react-router-dom';
         
                 setLoading(true);          
                 try{
-                    setLoading(true);
+                  dispatch(signInStart());
                 const res = await fetch('/api/auth/signin',
                 {
                     method: 'POST',
@@ -32,14 +34,13 @@ import { Link, useNavigate } from 'react-router-dom';
                     body: JSON.stringify(formData),
                 });         
                 const data = await res.json();
+                console.log(data);
                 if(data.success === false){
-                    setError(data.message);
-                    setLoading(false);
+                    dispatchEvent(signInFailure(data.message));
                     return;
                 }
                 
-                setLoading(false);
-                setError(null);
+                dispatchEvent(signInSuccess(data));
                 navigate('/');
         
              } catch(error){
@@ -59,6 +60,7 @@ import { Link, useNavigate } from 'react-router-dom';
                         <button disabled={loading} className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disable:opacity-80">
                             {loading ? 'Loading...': 'Sign in'}
                         </button>
+                        <OAuth/>
                     </form>
                     <div className="flex gap-2 mt-5">
                         <p>Have an account?</p>
