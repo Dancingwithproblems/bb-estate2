@@ -20,9 +20,7 @@ import { Link, useNavigate } from 'react-router-dom';
             console.log(formData);
             };
             const handleSubmit = async (e) => {
-                e.preventDefault();  
-        
-                setLoading(true);          
+                e.preventDefault();        
                 try{
                   dispatch(signInStart());
                 const res = await fetch('/api/auth/signin',

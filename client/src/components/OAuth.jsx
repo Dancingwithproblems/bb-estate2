@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function OAuth() {
     const dispatch = useDispatch();       
-    const navigate= useNavigate();
+    const navigator= useNavigate();
 
     const handleGoogleClick = async() => {
         try {
