@@ -34,16 +34,16 @@ import { Link, useNavigate } from 'react-router-dom';
                 const data = await res.json();
                 console.log(data);
                 if(data.success === false){
-                    dispatchEvent(signInFailure(data.message));
+                    dispatch(signInFailure(data.message));
                     return;
                 }
                 
-                dispatchEvent(signInSuccess(data));
+                dispatch(signInSuccess(data));
                 navigate('/');
         
              } catch(error){
-                    setLoading(false);
-                    setError(error.message);
+                console.log(error);
+                dispatch(signInFailure(error.message));
                 }
                 
             };
